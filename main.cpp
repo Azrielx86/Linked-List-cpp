@@ -1,5 +1,5 @@
 #include <iostream>
-#include <type_traits>
+#include <typeinfo>
 #include "linked-list/linked-list.h"
 #include "linked-list/linked-list.cpp"
 
@@ -47,7 +47,7 @@ int main(int, char**)
         std::cout << "[1] int" << std::endl;
         std::cout << "[2] float" << std::endl;
         std::cout << "[3] string" << std::endl;
-        std::cout << "\u001b[30m[q] quit\u001b[0m" << std::endl;
+        std::cout << "[q] quit" << std::endl;
 
         std::cout << "option > ";
         std::cin >> option;
@@ -97,7 +97,7 @@ void action(linkedlist<_Tp>& list)
     std::cout << "[1] add" << std::endl;
     std::cout << "[2] delete" << std::endl;
     std::cout << "[3] clear" << std::endl;
-    std::cout << "\u001b[30m[r] return\u001b[0m" << std::endl;
+    std::cout << "[r] return" << std::endl;
 
     std::cout << "option > ";
     std::cin >> option;

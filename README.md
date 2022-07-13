@@ -4,6 +4,23 @@ There is an example of a double linked list that supports multiple types like in
 
 For this example, it creates three lists: int, float and string.
 
+## Compilation
+
+I know that it don't need cmake (it's like killing a fly with a bazooka).
+
+With cmake
+
+    mkdir build && cd build
+    cmake ..
+    cmake --build .
+
+With clang or gcc
+
+    clang++ **/*.cpp -o linked-lists
+or
+
+    g++ **/*.cpp -o linked-lists
+
 ## Menus
 
 Main menu
