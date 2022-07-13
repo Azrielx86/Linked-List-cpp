@@ -37,12 +37,18 @@ void node<_Tp>::setPrev(node<_Tp>* prev_ptr)
     _prev = prev_ptr;
 }
 
-// * Linked list
-
 template <class _Tp>
 linkedlist<_Tp>::linkedlist()
 {
     this->size = 0;
+    this->head = NULL;
+    this->end = NULL;
+}
+
+template <class _Tp>
+linkedlist<_Tp>::~linkedlist()
+{
+    this->clear();
     this->head = NULL;
     this->end = NULL;
 }
@@ -99,7 +105,6 @@ int linkedlist<_Tp>::add_node_at_head(_Tp value)
     {
         this->head = new_node;
         this->end = new_node;
-        this->size++;
     }
     else
     {
@@ -107,8 +112,8 @@ int linkedlist<_Tp>::add_node_at_head(_Tp value)
         head->setPrev(new_node);
         new_node->setNext(head);
         this->head = new_node;
-        this->size++;
     }
+    this->size++;
     return 0;
 }
 
@@ -143,10 +148,11 @@ void linkedlist<_Tp>::delete_node(int index)
         node_to_delete = this->head;
         this->head = this->head->getNext();
     }
-    else if (index == this->size)
+    else if (index == this->size - 1)
     {
         node_to_delete = this->end;
         this->end = node_to_delete->getPrev();
+        this->end->setNext(NULL);
     }
     else
     {
@@ -159,8 +165,8 @@ void linkedlist<_Tp>::delete_node(int index)
         node_to_delete->getNext()->setPrev(pos);
     }
 
-    delete node_to_delete;
     this->size--;
+    delete node_to_delete;
 }
 
 template <class _Tp>
@@ -174,14 +180,24 @@ std::vector<_Tp> linkedlist<_Tp>::to_vector()
         list.push_back(pos->getValue());
         pos = pos->getNext();
     }
-    
+
     return list;
 }
 
+template <class _Tp>
+void linkedlist<_Tp>::clear()
+{
+    while (this->size > 0)
+        delete_node(this->size - 1);
+
+    this->head = NULL;
+    this->end = NULL;
+}
 
 template <class _Tp>
 void linkedlist<_Tp>::print_list()
 {
+    if (this->size <= 0) return;
     node<_Tp>* pos = this->head;
     for (int i = 0; i < this->size; i++)
     {
@@ -195,6 +211,7 @@ void linkedlist<_Tp>::print_list()
 template <class _Tp>
 void linkedlist<_Tp>::print_list_reverse()
 {
+    if (this->size <= 0) return;
     node<_Tp>* pos = this->end;
     for (int i = this->size; i > 0; i--)
     {

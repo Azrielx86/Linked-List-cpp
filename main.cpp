@@ -1,84 +1,139 @@
 #include <iostream>
+#include <type_traits>
 #include "linked-list/linked-list.h"
 #include "linked-list/linked-list.cpp"
 
+#if defined(_WIN32) || defined(__CYGWIN__)
+#define CLEAR "cls"
+#else
 #define CLEAR "clear"
+#endif
 
-void test();
+template<class _Tp>
+void action(linkedlist<_Tp>& list);
 
 int main(int, char**)
 {
     char option;
+    int input_i;
+    float input_f;
+    std::string input_s;
+    linkedlist<int> list_int;
+    linkedlist<float> list_float;
+    linkedlist<std::string> list_str;
 
-    test();
-    
     system(CLEAR);
 
     while (true)
     {
-        std::cout << "Select an data type: " << std::endl;
-        std::cout << "[1] int" << std::endl;
-        std::cout << "[2] double" << std::endl;
-        std::cout << "[3] string" << std::endl << std::endl;
-        std::cout << "[q] quit" << std::endl;
+        system(CLEAR);
+        if (list_int.getSize() > 0)
+        {
+            std::cout << "Int list:    ";
+            list_int.print_list();
+        }
+        if (list_float.getSize() > 0)
+        {
+            std::cout << "Float list:  ";
+            list_float.print_list();
+        }
+        if (list_str.getSize() > 0)
+        {
+            std::cout << "String list: ";
+            list_str.print_list();
+        }
 
+        std::cout << "Select a list: " << std::endl;
+        std::cout << "[1] int" << std::endl;
+        std::cout << "[2] float" << std::endl;
+        std::cout << "[3] string" << std::endl;
+        std::cout << "\u001b[30m[q] quit\u001b[0m" << std::endl;
+
+        std::cout << "option > ";
         std::cin >> option;
 
         if (option == '1')
         {
+            action(list_int);
         }
         else if (option == '2')
         {
+            action(list_float);
         }
         else if (option == '3')
         {
+            action(list_str);
         }
         else if (option == 'q') break;
         else std::cout << "Incorrect option!" << std::endl;
-
-        system(CLEAR);
     }
 
     return 0;
 }
 
-void test()
+template<class _Tp>
+void action(linkedlist<_Tp>& list)
 {
-    linkedlist<int> int_list;
-    linkedlist<std::string> string_list;
+    char option;
+    _Tp input;
+    system(CLEAR);
 
-    string_list.add_node_at_head("Mundo");
-    string_list.add_node_at_head("Hola");
-    string_list.add_node_at_end("Desde C++!");
+    std::cout << "Using list: ";
+    const char* type = typeid(_Tp).name();
+    switch (type[0])
+    {
+    case 'i':
+        std::cout << "int";
+        break;
+    case 'f':
+        std::cout << "float";
+        break;
+    default:
+        std::cout << "string";
+        break;
+    }
 
-    for (int i = 0; i <= 15; i++)
-        int_list.add_node_at_end(i);
+    std::cout << std::endl << "Select Action: " << std::endl;
+    std::cout << "[1] add" << std::endl;
+    std::cout << "[2] delete" << std::endl;
+    std::cout << "[3] clear" << std::endl;
+    std::cout << "\u001b[30m[r] return\u001b[0m" << std::endl;
 
-    int_list.add_node_at_head(555);
-    int_list.add_node_at_index(4, 75);
-    int_list.add_node_at_end(999);
+    std::cout << "option > ";
+    std::cin >> option;
+    std::cout << "\033[1A\33[2Kvalue > ";
 
-    int_list.print_list();
-    int_list.print_list_reverse();
-    std::cout << "Valor en el índice 3: " << int_list[3] << std::endl;
+    switch (option)
+    {
+    case '1':
+        std::cin >> input;
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            break;
+        }
 
-    // string_list.print_list();
+        list.add_node_at_end(input);
 
-    std::cout << "Eliminado de nodos" << std::endl;
-    int_list.delete_node(0);
-    int_list.delete_node(int_list.getSize());
-    int_list.delete_node(3);
+        break;
+    case '2':
+        int index;
+        std::cin >> index;
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            break;
+        }
+        list.delete_node(index);
+        break;
 
+    case '3':
+        list.clear();
+        break;
 
-    int_list.print_list();
-    int_list.print_list_reverse();
-
-
-    std::cout << "Nuevas adiciones de nodos" << std::endl;
-    int_list.add_node_at_head(-1);
-    int_list.add_node_at_end(16);
-    int_list.add_node_at_index(5, 69);
-
-    int_list.print_list();
-    int_list.print_list_reverse();
+    case 'r':
+        return;
+    default:
+        break;
+    }
 }

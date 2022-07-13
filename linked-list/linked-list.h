@@ -27,6 +27,7 @@ private:
     int size;
 public:
     linkedlist<_Tp>();
+    ~linkedlist<_Tp>();
     _Tp& operator[](int index);
     int getSize();
     int add_node_at_end(_Tp value);
@@ -34,6 +35,7 @@ public:
     int add_node_at_index(int index, _Tp value);
     void delete_node(int index);
     std::vector<_Tp> to_vector();
+    void clear();
     void print_list();
     void print_list_reverse();
 };
